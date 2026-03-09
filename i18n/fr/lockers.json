@@ -1,0 +1,27 @@
+{
+  "_author": "Dr Hamid MADANI drmdh@msn.com",
+  "title": "Vestiaires",
+  "fields": {
+    "number": "N° Casier",
+    "zone": "Zone",
+    "status": "Statut",
+    "currentClient": "Client actuel"
+  },
+  "statuses": {
+    "available": "Disponible",
+    "occupied": "Occupé",
+    "maintenance": "Maintenance",
+    "out_of_order": "Hors service"
+  },
+  "actions": {
+    "assign": "Attribuer casier",
+    "release": "Libérer casier",
+    "reportLoss": "Signaler perte TAG",
+    "maintenance": "Mettre en maintenance"
+  },
+  "zones": {
+    "A": "Zone A",
+    "B": "Zone B",
+    "C": "Zone C"
+  }
+}

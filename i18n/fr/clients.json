@@ -1,0 +1,31 @@
+{
+  "_author": "Dr Hamid MADANI drmdh@msn.com",
+  "title": "Clients",
+  "create": "Nouveau client",
+  "types": {
+    "abonne": "Abonné",
+    "visiteur": "Visiteur"
+  },
+  "fields": {
+    "clientNumber": "N° Client",
+    "clientType": "Type",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "phone": "Téléphone",
+    "email": "Email",
+    "dateOfBirth": "Date de naissance",
+    "gender": "Genre",
+    "photo": "Photo",
+    "address": "Adresse",
+    "wilaya": "Wilaya",
+    "status": "Statut",
+    "notes": "Notes"
+  },
+  "card": {
+    "print": "Imprimer carte abonné",
+    "title": "Carte Abonné"
+  },
+  "search": {
+    "placeholder": "Rechercher par nom, numéro ou téléphone..."
+  }
+}

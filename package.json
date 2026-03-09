@@ -1,0 +1,124 @@
+{
+  "name": "@mostajs/secu",
+  "version": "1.0.3",
+  "description": "Client access control, lockers, RFID tags — reusable security module for @mostajs ecosystem",
+  "author": "Dr Hamid MADANI <drmdh@msn.com>",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./api/*": {
+      "types": "./dist/api/*.d.ts",
+      "import": "./dist/api/*.js",
+      "default": "./dist/api/*.js"
+    },
+    "./components/*": {
+      "types": "./dist/components/*.d.ts",
+      "import": "./dist/components/*.js",
+      "default": "./dist/components/*.js"
+    },
+    "./lib/menu": {
+      "types": "./dist/lib/menu.d.ts",
+      "import": "./dist/lib/menu.js",
+      "default": "./dist/lib/menu.js"
+    },
+    "./lib/permissions": {
+      "types": "./dist/lib/permissions.d.ts",
+      "import": "./dist/lib/permissions.js",
+      "default": "./dist/lib/permissions.js"
+    },
+    "./lib/seeds": {
+      "types": "./dist/lib/seeds.d.ts",
+      "import": "./dist/lib/seeds.js",
+      "default": "./dist/lib/seeds.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.js",
+      "default": "./dist/types/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "i18n",
+    "seeds",
+    "secu.wire.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "access-control",
+    "client-management",
+    "lockers",
+    "rfid",
+    "qr-code",
+    "security",
+    "nextjs",
+    "mosta"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apolocine/mosta-secu"
+  },
+  "homepage": "https://mostajs.dev/packages/secu",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@mostajs/orm": "^1.4.0"
+  },
+  "peerDependencies": {
+    "@mostajs/menu": ">=1.0.0",
+    "@mostajs/ticketing": ">=1.0.0",
+    "@mostajs/audit": ">=1.0.0",
+    "@mostajs/face": ">=1.3.0",
+    "lucide-react": ">=0.400.0",
+    "next": ">=14",
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "@mostajs/menu": {
+      "optional": true
+    },
+    "@mostajs/ticketing": {
+      "optional": true
+    },
+    "@mostajs/audit": {
+      "optional": true
+    },
+    "@mostajs/face": {
+      "optional": true
+    },
+    "lucide-react": {
+      "optional": true
+    },
+    "next": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@mostajs/menu": "^1.0.2",
+    "@mostajs/ticketing": "^1.0.0",
+    "@mostajs/audit": "^1.0.3",
+    "lucide-react": "^0.460.0",
+    "@types/node": "^25.3.3",
+    "@types/react": "^19.2.14",
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "typescript": "^5.6.0"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "_doc": "Manifeste de câblage pour @mostajs/secu",
+  "package": "@mostajs/secu",
+  "version": "1.0.1",
+  "type": "business",
+  "title": "SecuAccess Pro",
+  "slogan": "Gestion & Contrôle d'Accès - Centre de Loisirs",
+
+  "schemas": {
+    "from": "@mostajs/secu",
+    "exports": ["ClientSchema", "LockerSchema", "RfidTagSchema", "LockerEventSchema"]
+  },
+
+  "repositories": [
+    { "class": "ClientRepository", "type": "ClientDTO", "factory": "clientRepo", "from": "@mostajs/secu" },
+    { "class": "LockerRepository", "type": "LockerDTO", "factory": "lockerRepo", "from": "@mostajs/secu" },
+    { "class": "RfidTagRepository", "type": "RfidTagDTO", "factory": "rfidTagRepo", "from": "@mostajs/secu" },
+    { "class": "LockerEventRepository", "type": "LockerEventDTO", "factory": "lockerEventRepo", "from": "@mostajs/secu" }
+  ],
+
+  "menu": {
+    "name": "secuMenuContribution",
+    "from": "@mostajs/secu/lib/menu"
+  },
+
+  "permissions": {
+    "from": "@mostajs/secu/lib/permissions",
+    "permissionsConst": "SECU_PERMISSIONS",
+    "definitionsConst": "SECU_PERMISSION_DEFINITIONS",
+    "categoriesConst": "SECU_CATEGORY_DEFINITIONS",
+    "roles": [
+      {
+        "name": "agent_accueil",
+        "description": "Agent d'accueil — gestion clients et accès",
+        "system": true,
+        "permissions": [
+          "client:view", "client:create", "client:update", "client:search",
+          "activity:view",
+          "access:view", "access:create", "access:update",
+          "locker:view", "locker:assign", "locker:release",
+          "rfid:view", "rfid:program", "rfid:deactivate", "rfid:replace",
+          "dashboard:view"
+        ]
+      },
+      {
+        "name": "agent_attraction",
+        "description": "Agent d'attraction — consultation et scan",
+        "system": true,
+        "permissions": [
+          "client:view", "activity:view", "access:view", "locker:view"
+        ]
+      },
+      {
+        "name": "superviseur",
+        "description": "Superviseur — consultation et audit",
+        "system": true,
+        "permissions": [
+          "client:view", "client:search",
+          "activity:view",
+          "access:view",
+          "locker:view",
+          "dashboard:view", "dashboard:stats",
+          "audit:view"
+        ]
+      }
+    ]
+  },
+
+  "seeds": {
+    "factory": "createSecuSeeds",
+    "from": "@mostajs/secu/lib/seeds"
+  },
+
+  "i18n": [
+    { "namespace": "clients", "source": "node_modules/@mostajs/secu/i18n/fr/clients.json" },
+    { "namespace": "lockers", "source": "node_modules/@mostajs/secu/i18n/fr/lockers.json" },
+    { "namespace": "rfid", "source": "node_modules/@mostajs/secu/i18n/fr/rfid.json" },
+    { "namespace": "access", "source": "node_modules/@mostajs/secu/i18n/fr/access.json" }
+  ]
+}

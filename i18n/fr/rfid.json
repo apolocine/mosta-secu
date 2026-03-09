@@ -1,0 +1,21 @@
+{
+  "_author": "Dr Hamid MADANI drmdh@msn.com",
+  "title": "Tags RFID",
+  "fields": {
+    "tagId": "ID Tag",
+    "client": "Client",
+    "status": "Statut"
+  },
+  "statuses": {
+    "available": "Disponible",
+    "active": "Actif",
+    "deactivated": "Désactivé",
+    "lost": "Perdu"
+  },
+  "actions": {
+    "program": "Programmer TAG",
+    "assign": "Attribuer",
+    "deactivate": "Désactiver",
+    "replace": "Remplacer (perte)"
+  }
+}

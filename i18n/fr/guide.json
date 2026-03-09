@@ -1,0 +1,371 @@
+{
+  "title": "Guide d'utilisation",
+  "subtitle": "Découvrez SecuAccess Pro et commencez à utiliser le système efficacement",
+  "tabs": {
+    "overview": "Vue d'ensemble",
+    "firstSteps": "Premiers pas",
+    "interface": "Interface",
+    "roles": "Rôles & Permissions",
+    "tips": "Conseils",
+    "clients": "Clients & Activités",
+    "scan": "Contrôle d'accès",
+    "lockers": "Casiers & RFID",
+    "architecture": "Architecture",
+    "security": "Sécurité & Audit"
+  },
+  "overview": {
+    "welcome": {
+      "title": "Bienvenue dans SecuAccess Pro",
+      "description": "SecuAccess Pro est un système complet de gestion et contrôle d'accès pour centres de loisirs. Il vous permet de gérer efficacement l'identification des clients, le contrôle d'accès et la gestion des abonnements."
+    },
+    "cards": {
+      "multiRoles": { "title": "Multi-rôles", "description": "Réceptionniste, agent de contrôle, administrateur" },
+      "scan": { "title": "QR / RFID / Face", "description": "Identification multi-modale des clients" },
+      "pwa": { "title": "PWA Mobile", "description": "Application mobile pour les agents terrain" }
+    },
+    "modules": {
+      "title": "Modules principaux",
+      "clients": { "title": "Gestion clients", "description": "Inscription, identification et suivi des abonnés et visiteurs" },
+      "access": { "title": "Contrôle d'accès", "description": "Scan QR, RFID et vérification faciale à l'entrée" },
+      "lockers": { "title": "Casiers", "description": "Attribution, suivi et libération automatisée des casiers" },
+      "admin": { "title": "Administration", "description": "Utilisateurs, paramètres, audit et rapports" }
+    }
+  },
+  "firstSteps": {
+    "intro": {
+      "title": "Étapes essentielles",
+      "description": "Suivez ces étapes pour une prise en main optimale du système."
+    },
+    "steps": [
+      {
+        "title": "Connexion initiale",
+        "description": "Connectez-vous avec vos identifiants et sécurisez votre compte",
+        "details": [
+          "Utilisez les identifiants fournis par votre administrateur",
+          "Modifiez immédiatement votre mot de passe",
+          "Vérifiez vos informations de profil"
+        ]
+      },
+      {
+        "title": "Découvrir l'interface",
+        "description": "Familiarisez-vous avec la navigation et le tableau de bord",
+        "details": [
+          "Explorez la sidebar collapsible et ses modules",
+          "Consultez le tableau de bord avec les statistiques en temps réel",
+          "Repérez les raccourcis vers vos tâches fréquentes"
+        ]
+      },
+      {
+        "title": "Comprendre votre rôle",
+        "description": "Identifiez vos permissions selon votre profil utilisateur",
+        "details": [
+          "Réceptionniste : accueil et gestion des clients",
+          "Agent de contrôle : scan et validation des accès",
+          "Administrateur : configuration et supervision"
+        ]
+      },
+      {
+        "title": "Commencer les opérations",
+        "description": "Effectuez vos premières opérations sous supervision",
+        "details": [
+          "Enregistrez votre premier client ou abonné",
+          "Créez un premier ticket d'accès",
+          "Effectuez un premier scan de vérification"
+        ]
+      }
+    ]
+  },
+  "interface": {
+    "title": "Navigation et Interface",
+    "sidebar": {
+      "title": "Sidebar et Navigation",
+      "description": "La sidebar collapsible organise toutes les fonctionnalités par modules logiques. Elle s'adapte à votre rôle pour n'afficher que les modules auxquels vous avez accès."
+    },
+    "nav": {
+      "dashboard": { "name": "Tableau de bord", "description": "Vue d'ensemble et statistiques temps réel" },
+      "clients": { "name": "Clients", "description": "Gestion des abonnés et visiteurs" },
+      "access": { "name": "Contrôle d'accès", "description": "Scan QR, RFID et reconnaissance faciale" },
+      "lockers": { "name": "Casiers", "description": "Attribution et suivi des casiers" },
+      "reports": { "name": "Rapports", "description": "Fréquentation, audit et analyses" },
+      "admin": { "name": "Administration", "description": "Utilisateurs, paramètres et configuration" }
+    },
+    "roleModules": {
+      "title": "Modules accessibles par rôle",
+      "description": "Chaque rôle a accès à un ensemble de modules adapté à ses responsabilités.",
+      "receptionist": { "label": "Réceptionniste", "modules": "Clients, Tickets, Abonnements, Casiers" },
+      "agent": { "label": "Agent de contrôle", "modules": "Scan QR, Vérification faciale, Validation accès" },
+      "admin": { "label": "Administrateur", "modules": "Tous les modules + Configuration + Audit" }
+    }
+  },
+  "roles": {
+    "title": "Système de rôles",
+    "description": "SecuAccess Pro utilise un système de contrôle d'accès basé sur les rôles (RBAC) pour sécuriser les opérations et adapter l'interface à chaque utilisateur.",
+    "receptionist": {
+      "label": "Réceptionniste",
+      "permissions": [
+        "Accueil et identification des clients",
+        "Création de tickets d'accès",
+        "Gestion des abonnements",
+        "Attribution des casiers"
+      ]
+    },
+    "agent": {
+      "label": "Agent de contrôle",
+      "permissions": [
+        "Scan QR via application PWA",
+        "Vérification faciale à l'entrée",
+        "Validation et refus d'accès",
+        "Consultation historique des passages"
+      ]
+    },
+    "admin": {
+      "label": "Administrateur",
+      "permissions": [
+        "Gestion des utilisateurs et rôles",
+        "Configuration des paramètres système",
+        "Suivi des activités et audit",
+        "Rapports complets et statistiques"
+      ]
+    },
+    "supervisor": {
+      "label": "Superviseur",
+      "permissions": [
+        "Consultation en lecture seule",
+        "Journal d'audit complet",
+        "Tableau de bord et statistiques",
+        "Historique des scans"
+      ]
+    },
+    "matrix": {
+      "title": "Matrice des permissions",
+      "headers": { "permission": "Permission", "admin": "Admin", "accueil": "Accueil", "attraction": "Attraction", "superviseur": "Superviseur" }
+    }
+  },
+  "tips": {
+    "intro": {
+      "title": "Conseils pour bien démarrer",
+      "description": "Ces conseils vous aideront à maîtriser rapidement SecuAccess Pro et à éviter les erreurs courantes."
+    },
+    "categories": {
+      "bestPractices": {
+        "title": "Bonnes pratiques",
+        "items": [
+          "Vérifiez toujours l'identité du client avant de valider l'accès",
+          "Utilisez la reconnaissance faciale pour les cas douteux",
+          "Vérifiez la validité de l'abonnement avant chaque accès",
+          "Consultez l'historique en cas de litige"
+        ]
+      },
+      "security": {
+        "title": "Sécurité",
+        "items": [
+          "Ne partagez jamais vos identifiants de connexion",
+          "Déconnectez-vous après chaque session de travail",
+          "Changez régulièrement votre mot de passe",
+          "Signalez tout comportement ou accès suspect"
+        ]
+      },
+      "efficiency": {
+        "title": "Efficacité",
+        "items": [
+          "Utilisez le scan QR pour un accès rapide",
+          "Préparez les casiers à l'avance pour les groupes",
+          "Consultez le tableau de bord pour les pics de fréquentation",
+          "Utilisez les filtres pour retrouver rapidement un client"
+        ]
+      },
+      "support": {
+        "title": "Support",
+        "items": [
+          "Consultez d'abord le guide de prise en main",
+          "Utilisez la section Aide du menu",
+          "Demandez de l'aide à vos collègues expérimentés",
+          "Contactez l'administrateur pour les problèmes techniques"
+        ]
+      }
+    }
+  },
+  "clientsTab": {
+    "title": "Gestion des Clients & Activités",
+    "createClient": {
+      "title": "Créer un nouveau client",
+      "desc": "Enregistrer un nouveau client dans le système.",
+      "requiredFields": "Nom, Prénom, Type (abonné/visiteur)",
+      "optionalFields": "Téléphone, Email, Date de naissance, Genre, Adresse, Wilaya, Photo, Notes",
+      "auto": "Le système génère automatiquement un numéro client unique (CLI-00001) et un QR code permanent.",
+      "face": "Si la reconnaissance faciale est activée, la webcam détecte le visage et enregistre un descripteur biométrique de 128 points."
+    },
+    "memberCard": {
+      "title": "Carte de membre",
+      "desc": "Carte format crédit (85.6mm) avec nom, numéro client, QR code et photo. Téléchargeable en PNG haute résolution ou imprimable directement."
+    },
+    "activities": {
+      "title": "Activités préconfigurées (12)",
+      "modes": {
+        "title": "Modes de validité des tickets",
+        "single_use": "Utilisation unique — consommé en un seul passage",
+        "day_reentry": "Journée (réentrée) — entrée/sortie toute la journée",
+        "time_slot": "Créneau horaire — valide pour une durée définie",
+        "unlimited": "Illimité — accès sans restriction"
+      }
+    },
+    "plans": {
+      "title": "Plans d'abonnement",
+      "temporal": "Temporel — durée fixe, accès illimité (ex: Famille Mensuel 30 jours)",
+      "usage": "Par séances — nombre de séances fixe (ex: Pack Sport 15 séances)",
+      "mixed": "Mixte — durée + nombre de séances (ex: Premium Mixte 30j/20 séances)"
+    },
+    "tickets": {
+      "title": "Génération de tickets",
+      "desc": "Sélectionner le client, l'accès actif, l'activité et le type (standard/cadeau). Le ticket reçoit un numéro unique (TKT-YYYYMMDD-0001), un QR code unique et une date de validité."
+    }
+  },
+  "scanTab": {
+    "title": "Contrôle d'accès",
+    "desktop": {
+      "title": "Scan Desktop (Webcam)",
+      "path": "/dashboard/scan",
+      "desc": "Ouvrir le module Scan, la webcam s'active automatiquement. Présenter le QR code du ticket."
+    },
+    "mobile": {
+      "title": "Scan Mobile (PWA)",
+      "path": "/agent/scan",
+      "desc": "Interface minimale avec caméra arrière, détection QR 10fps, retour sonore (800Hz = autorisé, 300Hz = refusé)."
+    },
+    "checks": {
+      "title": "Vérifications automatiques",
+      "items": [
+        "Le ticket existe dans le système",
+        "Le ticket est actif (non utilisé, expiré ou annulé)",
+        "La date de validité n'est pas dépassée",
+        "L'accès du client est actif",
+        "Le client n'est pas suspendu"
+      ]
+    },
+    "validityBehavior": {
+      "title": "Comportement selon le mode de validité",
+      "single_use": "single_use / time_slot → Ticket marqué utilisé, quota -1",
+      "day_reentry": "day_reentry → Si déjà scanné aujourd'hui : réentrée sans décrémentation",
+      "unlimited": "unlimited → Autorisé sans décrémentation"
+    },
+    "face": {
+      "title": "Vérification faciale post-scan",
+      "desc": "Après un scan autorisé, l'agent peut vérifier l'identité : la webcam capture le visage et le compare au descripteur enregistré du client. Si la distance euclidienne < 0.6, l'identité est confirmée."
+    },
+    "history": {
+      "title": "Historique des scans",
+      "desc": "Chaque scan enregistre : date/heure, agent, client, activité, méthode (webcam/pwa), résultat (autorisé/refusé), motif de refus, quota avant/après, indicateur de réentrée."
+    }
+  },
+  "lockersTab": {
+    "title": "Casiers & RFID",
+    "zones": {
+      "title": "Cartographie des casiers (80 casiers)",
+      "a": "Zone A : casiers 1–30",
+      "b": "Zone B : casiers 31–60",
+      "c": "Zone C : casiers 61–80"
+    },
+    "statuses": {
+      "available": "Disponible (vert)",
+      "occupied": "Occupé (rouge)",
+      "maintenance": "Maintenance (orange)",
+      "out_of_order": "Hors service (gris)"
+    },
+    "operations": {
+      "title": "Opérations sur les casiers",
+      "assign": "Attribuer — assigner un casier à un client",
+      "release": "Libérer — libérer un casier occupé",
+      "maintenance": "Maintenance — mettre un casier hors service",
+      "lost": "Perte de tag — signaler la perte d'un tag RFID"
+    },
+    "rfid": {
+      "title": "Tags RFID",
+      "register": "Enregistrer — ajouter un nouveau tag (identifiant physique)",
+      "assign": "Assigner — lier un tag à un client",
+      "deactivate": "Désactiver — désactiver un tag (perdu, endommagé)",
+      "reactivate": "Réactiver — remettre un tag en service",
+      "replace": "Remplacer — remplacer un tag perdu par un nouveau"
+    }
+  },
+  "architectureTab": {
+    "title": "Architecture technique",
+    "stack": {
+      "title": "Stack technologique",
+      "items": {
+        "frontend": { "label": "Frontend", "value": "Next.js 16 + React 19 + Tailwind CSS 4" },
+        "backend": { "label": "Backend", "value": "Next.js App Router (API Routes)" },
+        "database": { "label": "Base de données", "value": "MongoDB (Mongoose 9)" },
+        "auth": { "label": "Authentification", "value": "NextAuth v5 (JWT)" },
+        "desktop": { "label": "Desktop", "value": "Electron 34" },
+        "qr": { "label": "QR Code", "value": "qrcode (génération) + html5-qrcode (scan)" },
+        "face": { "label": "Reconnaissance", "value": "@vladmandic/face-api" },
+        "ui": { "label": "UI", "value": "shadcn/ui + Radix UI + Lucide" }
+      }
+    },
+    "mode": {
+      "title": "Mode de fonctionnement hybride",
+      "desktop": "Desktop — Electron embarque le serveur Next.js dans un navigateur intégré",
+      "mobile": "Mobile — Agents terrain via navigateur en HTTPS sur le réseau local",
+      "cert": "Certificat TLS auto-signé généré automatiquement (RSA 2048-bit, SHA-256)",
+      "db": "Base de données — MongoDB local sur le serveur"
+    },
+    "setup": {
+      "title": "Installation",
+      "prereqs": "Windows 10+ ou Linux (AppImage), MongoDB local, réseau LAN",
+      "wizard": "Assistant 4 étapes : connexion DB → compte admin → données initiales → confirmation",
+      "accounts": {
+        "title": "Comptes par défaut (mode démo)",
+        "warning": "Changez les mots de passe par défaut après la première connexion !",
+        "list": [
+          { "email": "admin@secuaccess.dz", "pass": "Admin@123456", "role": "Administrateur" },
+          { "email": "accueil@secuaccess.dz", "pass": "Agent@123456", "role": "Agent d'accueil" },
+          { "email": "attraction@secuaccess.dz", "pass": "Agent@123456", "role": "Agent attraction" },
+          { "email": "superviseur@secuaccess.dz", "pass": "Super@123456", "role": "Superviseur" }
+        ]
+      }
+    }
+  },
+  "securityTab": {
+    "title": "Sécurité & Audit",
+    "auth": {
+      "title": "Authentification",
+      "items": [
+        "Connexion par email et mot de passe (bcrypt, 12 rounds de hachage)",
+        "Sessions JWT (JSON Web Token) — cookie httpOnly sécurisé",
+        "Redirection automatique vers /login pour les routes protégées",
+        "Mise à jour automatique de la date de dernière connexion"
+      ]
+    },
+    "rbac": {
+      "title": "Contrôle d'accès (RBAC 3 niveaux)",
+      "items": [
+        "Middleware Edge — vérification de présence du cookie JWT",
+        "Handler API — vérification complète JWT via checkPermission()",
+        "Constantes de fallback — permissions par défaut si la DB est indisponible"
+      ]
+    },
+    "headers": {
+      "title": "Protection HTTP",
+      "items": [
+        "X-Content-Type-Options: nosniff",
+        "X-Frame-Options: DENY",
+        "X-XSS-Protection: 1; mode=block",
+        "Referrer-Policy: strict-origin-when-cross-origin"
+      ]
+    },
+    "audit": {
+      "title": "Journal d'audit",
+      "desc": "Toute opération est automatiquement journalisée : horodatage, utilisateur, action, module, ressource, détails, adresse IP, statut (succès/échec).",
+      "modules": "Modules audités : clients, tickets, scan, lockers, rfid, access, users, activities, plans, settings",
+      "filters": "Filtres : période, module, utilisateur, type d'action, statut"
+    },
+    "qrSecurity": {
+      "title": "Sécurité QR Code",
+      "items": [
+        "QR codes encodent un identifiant MongoDB unique (ObjectId)",
+        "Non falsifiables — validés côté serveur à chaque scan",
+        "Journalisation complète et non modifiable des scans"
+      ]
+    }
+  }
+}

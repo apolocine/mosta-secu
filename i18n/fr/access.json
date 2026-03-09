@@ -1,0 +1,36 @@
+{
+  "_author": "Dr Hamid MADANI drmdh@msn.com",
+  "title": "Accès",
+  "plans": {
+    "title": "Plans d'abonnement",
+    "create": "Nouveau plan"
+  },
+  "fields": {
+    "plan": "Plan",
+    "activity": "Activité",
+    "accessType": "Type d'accès",
+    "totalQuota": "Quota total",
+    "remainingQuota": "Quota restant",
+    "startDate": "Date début",
+    "endDate": "Date fin",
+    "status": "Statut"
+  },
+  "types": {
+    "unlimited": "Illimité",
+    "count": "Par nombre",
+    "temporal": "Temporel",
+    "mixed": "Mixte"
+  },
+  "planTypes": {
+    "temporal": "Temporel",
+    "usage": "Par utilisation",
+    "mixed": "Mixte"
+  },
+  "grid": {
+    "title": "Grille d'accès",
+    "noAccess": "Non autorisé",
+    "assign": "Attribuer",
+    "modify": "Modifier",
+    "revoke": "Révoquer"
+  }
+}
