@@ -1,7 +1,7 @@
 {
   "_doc": "Manifeste de câblage pour @mostajs/secu",
   "package": "@mostajs/secu",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "type": "business",
   "title": "SecuAccess Pro",
   "slogan": "Gestion & Contrôle d'Accès - Centre de Loisirs",
@@ -76,5 +76,43 @@
     { "namespace": "lockers", "source": "node_modules/@mostajs/secu/i18n/fr/lockers.json" },
     { "namespace": "rfid", "source": "node_modules/@mostajs/secu/i18n/fr/rfid.json" },
     { "namespace": "access", "source": "node_modules/@mostajs/secu/i18n/fr/access.json" }
+  ],
+
+  "apiRoutes": [
+    {
+      "path": "src/app/api/clients/route.ts",
+      "code": "// Author: Dr Hamid MADANI drmdh@msn.com\nimport { createClientsHandler } from '@mostajs/secu'\nimport { clientRepo, auditLogRepo } from '@/dal/service'\nimport { checkPermission } from '@/lib/authCheck'\nimport { logAudit, getAuditUser } from '@mostajs/audit'\n\nexport const { GET, POST } = createClientsHandler({\n  checkAuth: (perm) => checkPermission(perm),\n  getClientRepo: clientRepo,\n  logAudit: async (entry) => { const repo = await auditLogRepo(); await logAudit(repo, entry) },\n  getAuditUser,\n})"
+    },
+    {
+      "path": "src/app/api/clients/[id]/route.ts",
+      "code": "// Author: Dr Hamid MADANI drmdh@msn.com\nimport { createClientByIdHandler } from '@mostajs/secu'\nimport { clientRepo, auditLogRepo } from '@/dal/service'\nimport { checkPermission } from '@/lib/authCheck'\nimport { logAudit, getAuditUser } from '@mostajs/audit'\n\nexport const { GET, PUT, DELETE } = createClientByIdHandler({\n  checkAuth: (perm) => checkPermission(perm),\n  getClientRepo: clientRepo,\n  logAudit: async (entry) => { const repo = await auditLogRepo(); await logAudit(repo, entry) },\n  getAuditUser,\n})"
+    },
+    {
+      "path": "src/app/api/clients/search/route.ts",
+      "code": "// Author: Dr Hamid MADANI drmdh@msn.com\nimport { createClientSearchHandler } from '@mostajs/secu'\nimport { clientRepo } from '@/dal/service'\nimport { checkPermission } from '@/lib/authCheck'\n\nexport const { GET } = createClientSearchHandler({\n  checkAuth: (perm) => checkPermission(perm),\n  getClientRepo: clientRepo,\n})"
+    },
+    {
+      "path": "src/app/api/lockers/route.ts",
+      "code": "// Author: Dr Hamid MADANI drmdh@msn.com\nimport { createLockersHandler } from '@mostajs/secu'\nimport { lockerRepo, lockerEventRepo, auditLogRepo } from '@/dal/service'\nimport { checkPermission } from '@/lib/authCheck'\nimport { logAudit, getAuditUser } from '@mostajs/audit'\n\nexport const { GET, POST } = createLockersHandler({\n  checkAuth: (perm) => checkPermission(perm),\n  getLockerRepo: lockerRepo,\n  getLockerEventRepo: lockerEventRepo,\n  logAudit: async (entry) => { const repo = await auditLogRepo(); await logAudit(repo, entry) },\n  getAuditUser,\n})"
+    },
+    {
+      "path": "src/app/api/rfid/route.ts",
+      "code": "// Author: Dr Hamid MADANI drmdh@msn.com\nimport { createRfidTagsHandler } from '@mostajs/secu'\nimport { rfidTagRepo, auditLogRepo } from '@/dal/service'\nimport { checkPermission } from '@/lib/authCheck'\nimport { logAudit, getAuditUser } from '@mostajs/audit'\n\nexport const { GET, POST } = createRfidTagsHandler({\n  checkAuth: (perm) => checkPermission(perm),\n  getRfidTagRepo: rfidTagRepo,\n  logAudit: async (entry) => { const repo = await auditLogRepo(); await logAudit(repo, entry) },\n  getAuditUser,\n})"
+    }
+  ],
+
+  "pages": [
+    {
+      "path": "src/app/dashboard/clients/page.tsx",
+      "code": "'use client'\n// Author: Dr Hamid MADANI drmdh@msn.com\nimport { ClientForm } from '@mostajs/secu/components/ClientForm'\nimport { useEffect, useState } from 'react'\n\nexport default function ClientsPage() {\n  const [clients, setClients] = useState<any[]>([])\n  const [loading, setLoading] = useState(true)\n\n  useEffect(() => {\n    fetch('/api/clients').then(r => r.json()).then(d => { setClients(d.data || []); setLoading(false) })\n  }, [])\n\n  if (loading) return <div className=\"p-6\">Chargement...</div>\n\n  return (\n    <div className=\"p-6 space-y-4\">\n      <h1 className=\"text-2xl font-bold\">Clients</h1>\n      <div className=\"grid gap-4\">\n        {clients.map((c: any) => (\n          <div key={c.id} className=\"p-4 border rounded\">{c.firstName} {c.lastName} — {c.clientType}</div>\n        ))}\n      </div>\n    </div>\n  )\n}"
+    },
+    {
+      "path": "src/app/dashboard/lockers/page.tsx",
+      "code": "'use client'\n// Author: Dr Hamid MADANI drmdh@msn.com\nimport { useEffect, useState } from 'react'\n\nexport default function LockersPage() {\n  const [lockers, setLockers] = useState<any[]>([])\n  const [loading, setLoading] = useState(true)\n\n  useEffect(() => {\n    fetch('/api/lockers').then(r => r.json()).then(d => { setLockers(d.data || []); setLoading(false) })\n  }, [])\n\n  if (loading) return <div className=\"p-6\">Chargement...</div>\n\n  return (\n    <div className=\"p-6 space-y-4\">\n      <h1 className=\"text-2xl font-bold\">Casiers</h1>\n      <div className=\"grid grid-cols-4 gap-2\">\n        {lockers.map((l: any) => (\n          <div key={l.id} className={`p-3 border rounded text-center ${l.status === 'available' ? 'bg-green-50' : 'bg-red-50'}`}>\n            #{l.number} — {l.zone}\n          </div>\n        ))}\n      </div>\n    </div>\n  )\n}"
+    },
+    {
+      "path": "src/app/dashboard/rfid/page.tsx",
+      "code": "'use client'\n// Author: Dr Hamid MADANI drmdh@msn.com\nimport { useEffect, useState } from 'react'\n\nexport default function RfidPage() {\n  const [tags, setTags] = useState<any[]>([])\n  const [loading, setLoading] = useState(true)\n\n  useEffect(() => {\n    fetch('/api/rfid').then(r => r.json()).then(d => { setTags(d.data || []); setLoading(false) })\n  }, [])\n\n  if (loading) return <div className=\"p-6\">Chargement...</div>\n\n  return (\n    <div className=\"p-6 space-y-4\">\n      <h1 className=\"text-2xl font-bold\">Tags RFID</h1>\n      <div className=\"grid gap-2\">\n        {tags.map((t: any) => (\n          <div key={t.id} className={`p-3 border rounded ${t.status === 'available' ? 'bg-green-50' : 'bg-yellow-50'}`}>\n            {t.tagId} — {t.status}\n          </div>\n        ))}\n      </div>\n    </div>\n  )\n}"
+    }
   ]
 }

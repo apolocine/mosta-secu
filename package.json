@@ -1,6 +1,6 @@
 {
   "name": "@mostajs/secu",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Client access control, lockers, RFID tags — reusable security module for @mostajs ecosystem",
   "author": "Dr Hamid MADANI <drmdh@msn.com>",
   "license": "MIT",
