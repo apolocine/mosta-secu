@@ -57,7 +57,8 @@
     "wire.json",
     "secu.wire.json",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "llms.txt"
   ],
   "keywords": [
     "access-control",

@@ -1,0 +1,102 @@
+# @mostajs/secu — fiche LLM
+> Module métier de contrôle d'accès : gestion des clients, casiers (lockers), tags RFID, codes QR — schémas, repositories, handlers API Next.js, composants et pages d'admin.
+
+- Version: 1.0.16 · Licence: AGPL-3.0-or-later · Auteur: Dr Hamid MADANI <drmdh@msn.com>
+- Chemin: mostajs/mosta-secu · Statut audit: complet (dist/)
+
+## RÔLE
+Module métier « contrôle d'accès physique » de l'écosystème mostajs : gère les clients (abonnés/visiteurs avec carte QR et descripteur facial), les casiers de vestiaire répartis en zones, les tags RFID et leur cycle de vie, et l'identification d'un client (par QR ou RFID). Fournit schémas d'entités, repositories ORM, handlers API Next.js prêts à brancher, composants React (formulaire client, générateur de carte, grille d'accès) et pages d'administration. Module auto-enregistrable dans un registry `@mostajs/socle` (7 schémas, 7 repos, 22 permissions, 3 rôles).
+
+## INSTALLATION
+npm i @mostajs/secu @mostajs/orm
+
+## EXPORTS
+Point d'entrée racine (`.`) :
+- Schémas: ClientSchema, LockerSchema, RfidTagSchema, LockerEventSchema
+- Repositories: ClientRepository, LockerRepository, RfidTagRepository, LockerEventRepository
+- Handlers API: createClientsHandler, createClientByIdHandler, createClientSearchHandler, createLockersHandler, createLockerAssignHandler, createLockerReleaseHandler, createLockerMaintenanceHandler, createLockerReportLossHandler, createLockerEventsHandler, createRfidTagsHandler, createRfidAssignHandler, createRfidDeactivateHandler, createRfidReplaceHandler, createIdentifyHandler
+- Constantes: SECU_PERMISSIONS, SECU_PERMISSION_DEFINITIONS, SECU_CATEGORY_DEFINITIONS
+- Types: ClientDTO, LockerDTO, RfidTagDTO, LockerEventDTO, SecuAuthResult, SecuHandlerConfig, ClientsHandlerConfig, ClientByIdHandlerConfig, LockersHandlerConfig, RfidTagsHandlerConfig, IdentifyHandlerConfig, SecuPermission
+
+## EXPORTS PAR SOUS-CHEMIN
+- `./api/*` — routes individuelles : activities.route, client-access.route, clients.route, clients-id.route, clients-search.route, identify.route, lockers.route, rfid-tags.route, subscription-plans.route
+- `./components/*` — AccessGrid, ClientCardGenerator, ClientForm
+- `./lib/menu` — contribution menu
+- `./lib/permissions` — SECU_PERMISSIONS, SECU_PERMISSION_DEFINITIONS, SECU_CATEGORY_DEFINITIONS, type SecuPermission
+- `./lib/seeds` — createSecuSeeds, secuSeedFactory ; types SecuSeedConfig, SeedDefinition
+- `./types` — tous les DTO et config types
+- `./register` — register(registry) (auto-déclaration @mostajs/socle)
+- `./i18n/*` — fichiers de traduction
+- Pages disponibles dans dist/pages/ : ClientsPage, ClientDetailPage, ClientEditPage, ClientNewPage, ActivitiesPage, LockersPage, PlansPage, RfidPage
+
+## API — SIGNATURES
+createClientsHandler(config: ClientsHandlerConfig): route handlers Next.js
+createClientByIdHandler(config: ClientByIdHandlerConfig)
+createClientSearchHandler(config: ClientsHandlerConfig)
+createLockersHandler / createLockerAssignHandler / createLockerReleaseHandler / createLockerMaintenanceHandler / createLockerReportLossHandler / createLockerEventsHandler(config: LockersHandlerConfig)
+createRfidTagsHandler / createRfidAssignHandler / createRfidDeactivateHandler / createRfidReplaceHandler(config: RfidTagsHandlerConfig)
+createIdentifyHandler(config: IdentifyHandlerConfig)
+createSecuSeeds(config: SecuSeedConfig): SeedDefinition[]  // compatible wizard @mostajs/setup
+secuSeedFactory(context): SeedDefinition[]  // compatible SeedContext @mostajs/socle
+
+ClientRepository extends BaseRepository<ClientDTO> (dialect: IDialect) :
+  getNextClientNumber(): Promise<string>  // "CLI-00001"...
+  createWithAutoFields(data): Promise<ClientDTO>  // génère clientNumber + qrCode
+  searchClients(query, options?) · search(query, options?) · findPaginated(filter?, page?, limit?)
+  findByIdWithRfid(id) · findByQrCode(qrCode) · softDelete(id) · countActiveSubscribers()
+LockerRepository extends BaseRepository<LockerDTO> (dialect: IDialect) :
+  findAllWithOccupants(options?) · findByClient(clientId) · countOccupied() · countTotal()
+  assign(id, clientId, tagId|null) · release(id) · setMaintenance(id) · endMaintenance(id)
+RfidTagRepository, LockerEventRepository : extends BaseRepository<...>
+
+## TYPES CLÉS
+ClientDTO { id, clientNumber, clientType:'abonne'|'visiteur', firstName, lastName, phone?, email?, dateOfBirth?, gender?, photo?, faceDescriptor?:number[], address?, wilaya?, qrCode, rfidTagId?, status:'active'|'inactive'|'suspended', notes?, createdBy, createdAt, updatedAt }
+LockerDTO { id, number, zone:'A'|'B'|'C', status:'available'|'occupied'|'maintenance'|'out_of_order', currentClient, currentTag, rfidLockId|null, lastAssignedAt|null, ... }
+RfidTagDTO { id, tagId, client, assignedBy, status:'available'|'active'|'deactivated'|'lost', assignedAt|null, deactivatedAt|null, notes|null, ... }
+LockerEventDTO { id, locker, client, rfidTag, performedBy, eventType:'assigned'|'released'|'tag_lost'|'maintenance_start'|'maintenance_end', notes|null, timestamp }
+SecuAuthResult { error: Response|null, userId, session? }
+SecuHandlerConfig { checkAuth(permission)=>Promise<SecuAuthResult>, logAudit?, getAuditUser? }
+ClientsHandlerConfig extends SecuHandlerConfig { getClientRepo()=>Promise<ClientRepository> }
+LockersHandlerConfig extends SecuHandlerConfig { getLockerRepo, getLockerEventRepo, getRfidTagRepo }
+SecuSeedConfig { getRepos()=>Promise<{userRepo,roleRepo,clientRepo,...}>, hashPassword(pwd) }
+SECU_PERMISSIONS — 22 codes : client:view/create/update/delete/search, activity:view/create/update/delete, access:view/create/update/revoke, locker:view/assign/release/manage, rfid:view/program/deactivate/replace, dashboard:stats
+SecuPermission = valeurs de SECU_PERMISSIONS
+
+## PATTERN
+```ts
+// Route Next.js
+import { createClientsHandler } from '@mostajs/secu/api/clients.route'
+export const { GET, POST } = createClientsHandler({
+  checkAuth: (perm) => auth.checkPermission(perm),       // fournit SecuAuthResult
+  getClientRepo: async () => new ClientRepository(await getDialect()),
+})
+
+// Repository direct
+import { ClientRepository } from '@mostajs/secu'
+const repo = new ClientRepository(await getDialect())
+const client = await repo.createWithAutoFields({ firstName:'A', lastName:'B', clientType:'abonne' })
+const found = await repo.findByQrCode(scannedQr)
+
+// Seeds wizard
+import { createSecuSeeds } from '@mostajs/secu/lib/seeds'
+const seeds = createSecuSeeds({ getRepos, hashPassword })
+```
+
+## DÉPEND DE
+- @mostajs/orm (dependency) — BaseRepository, IDialect, FilterQuery, QueryOptions, PaginatedResult.
+- @mostajs/octoswitcher (dependency) — bascule de source de données.
+- Peers (tous optionnels sauf à l'usage) : @mostajs/audit, @mostajs/menu, @mostajs/settings, @mostajs/socle (>=2.0.0, requis pour register), @mostajs/ticketing, @mostajs/ui, @tanstack/react-query, next, react, lucide-react, sonner.
+
+## PIÈGES
+- Les handlers `./api/*` n'authentifient pas eux-mêmes : ils exigent une callback `checkAuth(permission)` qui renvoie un SecuAuthResult ; si `error` est non-null, le handler renvoie cette Response.
+- Les configs de handler reçoivent les repos via des factory `getXxxRepo()` (lazy, async) pour éviter les dépendances circulaires — ne pas passer une instance directement.
+- createWithAutoFields génère automatiquement clientNumber et qrCode : ne pas les fournir manuellement.
+- softDelete ne supprime pas la ligne : il passe le status à `inactive`.
+- register() exige `@mostajs/socle` (type ModuleRegistration) ; ce peer est optionnel dans package.json mais requis si on utilise l'auto-enregistrement.
+- hashPassword n'est pas fourni par ce module : createSecuSeeds attend qu'on lui passe la fonction de @mostajs/auth (`@mostajs/auth/lib/password`).
+
+## RÉFÉRENCES
+- README.md (racine du module)
+- docs/ (racine du module)
+- secu.wire.json, wire.json — déclaration de câblage
+- LICENSE (AGPL-3.0-or-later)
