@@ -1,0 +1,34 @@
+{
+  "_author": "Dr Hamid MADANI drmdh@msn.com",
+  "title": "Activités",
+  "create": "Nouvelle activité",
+  "fields": {
+    "name": "Nom",
+    "slug": "Identifiant",
+    "description": "Description",
+    "capacity": "Capacité",
+    "currentOccupancy": "Occupation actuelle",
+    "price": "Prix unitaire",
+    "status": "Statut",
+    "ticketValidityMode": "Mode de validité ticket",
+    "ticketDuration": "Durée (minutes)"
+  },
+  "validityModes": {
+    "day_reentry": "Journée (ré-entrée possible)",
+    "single_use": "Usage unique",
+    "time_slot": "Créneau horaire",
+    "unlimited": "Illimité"
+  },
+  "schedule": {
+    "title": "Horaires",
+    "days": {
+      "0": "Dimanche",
+      "1": "Lundi",
+      "2": "Mardi",
+      "3": "Mercredi",
+      "4": "Jeudi",
+      "5": "Vendredi",
+      "6": "Samedi"
+    }
+  }
+}

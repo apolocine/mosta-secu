@@ -65,12 +65,13 @@ export function createClientsHandler(config: ClientsHandlerConfig) {
       );
     }
 
-    const clientData: any = { ...body, createdBy: userId };
+    const resolvedUserId = userId || req.headers.get('x-auth-user-id') || '';
+    const clientData: any = { ...body, createdBy: resolvedUserId };
     if (clientData.email === '') delete clientData.email;
     if (clientData.dateOfBirth) clientData.dateOfBirth = new Date(clientData.dateOfBirth);
 
     const repo = await getClientRepo();
-    const client = await repo.create(clientData);
+    const client = await repo.createWithAutoFields(clientData);
 
     if (logAudit && getAuditUser) {
       await logAudit({

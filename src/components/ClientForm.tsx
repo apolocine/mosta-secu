@@ -4,6 +4,7 @@
 
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface ClientFormProps {
   initialData?: any
@@ -34,6 +35,7 @@ export default function ClientForm({
   onError,
 }: ClientFormProps) {
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [loading, setLoading] = useState(false)
 
   const [form, setForm] = useState({
@@ -87,6 +89,9 @@ export default function ClientForm({
       }
 
       const data = await res.json()
+      // Invalidate cached client data so detail/list pages show fresh data
+      await queryClient.invalidateQueries({ queryKey: ['client'] })
+      await queryClient.invalidateQueries({ queryKey: ['clients'] })
       if (onSuccess) {
         onSuccess(data.data)
       } else {

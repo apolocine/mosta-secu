@@ -54,6 +54,7 @@ export function createRfidAssignHandler(config: RfidTagsHandlerConfig) {
     const { error, session } = await checkAuth('rfid:program');
     if (error) return error;
 
+    const userId = session?.user?.id || req.headers.get('x-auth-user-id') || '';
     const { tagId, clientId } = await req.json();
 
     const tRepo = await getRfidTagRepo();
@@ -76,7 +77,7 @@ export function createRfidAssignHandler(config: RfidTagsHandlerConfig) {
       return NextResponse.json({ error: { code: 'DUPLICATE', message: 'Ce client a deja un TAG actif' } }, { status: 409 });
     }
 
-    const updatedTag = await tRepo.assign(tag.id, clientId, session?.user?.id);
+    const updatedTag = await tRepo.assign(tag.id, clientId, userId);
     await cRepo.update(clientId, { rfidTagId: tag.id } as any);
 
     if (logAudit && getAuditUser) {
@@ -131,6 +132,7 @@ export function createRfidReplaceHandler(config: RfidTagsHandlerConfig) {
     const { error, session } = await checkAuth('rfid:replace');
     if (error) return error;
 
+    const userId = session?.user?.id || req.headers.get('x-auth-user-id') || '';
     const { oldTagId, newTagId } = await req.json();
     const tRepo = await getRfidTagRepo();
 
@@ -150,7 +152,7 @@ export function createRfidReplaceHandler(config: RfidTagsHandlerConfig) {
     const clientId = typeof oldTag.client === 'object' ? (oldTag.client as any)?.id : oldTag.client;
 
     const updatedOld = await tRepo.markLost(oldTag.id);
-    const updatedNew = await tRepo.assign(newTag.id, clientId, session?.user?.id);
+    const updatedNew = await tRepo.assign(newTag.id, clientId, userId);
 
     if (clientId) {
       const cRepo = await getClientRepo();
@@ -158,6 +160,35 @@ export function createRfidReplaceHandler(config: RfidTagsHandlerConfig) {
     }
 
     return NextResponse.json({ data: { oldTag: updatedOld, newTag: updatedNew } });
+  }
+
+  return { POST };
+}
+
+export function createRfidReactivateHandler(config: RfidTagsHandlerConfig) {
+  const { checkAuth, getRfidTagRepo, logAudit, getAuditUser } = config;
+
+  async function POST(req: NextRequest) {
+    const { error, session } = await checkAuth('rfid:program');
+    if (error) return error;
+
+    const { tagId } = await req.json();
+    const tRepo = await getRfidTagRepo();
+    const tag = await tRepo.findByTagId(tagId);
+    if (!tag) {
+      return NextResponse.json({ error: { code: 'NOT_FOUND', message: 'TAG non trouve' } }, { status: 404 });
+    }
+    if (tag.status !== 'deactivated') {
+      return NextResponse.json({ error: { code: 'INVALID', message: 'TAG non desactive' } }, { status: 400 });
+    }
+
+    const updated = await tRepo.reactivate(tag.id);
+
+    if (logAudit && getAuditUser) {
+      await logAudit({ ...getAuditUser(session), action: 'tag_reactivate', module: 'rfid', resource: tagId, resourceId: tag.id });
+    }
+
+    return NextResponse.json({ data: updated });
   }
 
   return { POST };

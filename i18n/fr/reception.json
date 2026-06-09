@@ -1,0 +1,88 @@
+{
+  "_author": "Dr Hamid MADANI drmdh@msn.com",
+  "title": "Réception",
+  "subtitle": "Identifier client & créer tickets",
+  "steps": {
+    "identification": "Identification",
+    "profile": "Profil client",
+    "selection": "Sélection activités",
+    "tickets": "Tickets générés"
+  },
+  "identify": {
+    "title": "Comment identifier le client ?",
+    "scanQr": "Scanner QR",
+    "scanQrDesc": "Scanner la carte client",
+    "search": "Rechercher",
+    "searchDesc": "Par nom ou numéro",
+    "faceRecognition": "Reconnaissance faciale",
+    "faceRecognitionDesc": "Identifier par visage",
+    "newVisitor": "Nouveau visiteur",
+    "newVisitorDesc": "Enregistrer un visiteur",
+    "scanning": "Positionnez le QR code devant la caméra",
+    "searchPlaceholder": "Nom, prénom, téléphone, N° client...",
+    "searchNoResults": "Aucun client trouvé",
+    "searchMinChars": "Saisissez au moins 2 caractères",
+    "faceCapturing": "Regardez la caméra",
+    "faceNoMatch": "Aucun client reconnu",
+    "faceMatch": "Client identifié !",
+    "unknownQr": "QR code non reconnu",
+    "ticketFound": "Ticket trouvé — client associé chargé"
+  },
+  "visitor": {
+    "title": "Nouveau visiteur",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "phone": "Téléphone",
+    "create": "Enregistrer",
+    "creating": "Enregistrement..."
+  },
+  "profile": {
+    "clientNumber": "N° Client",
+    "type": "Type",
+    "activeAccesses": "Accès actifs",
+    "noAccess": "Aucun accès actif",
+    "remaining": "{{count}} restant(s)",
+    "unlimited": "Illimité",
+    "expired": "Expiré",
+    "depleted": "Quota épuisé",
+    "createTickets": "Créer des tickets",
+    "back": "Retour",
+    "assignAccess": "Attribuer un accès",
+    "assignAccessDesc": "Ce client n'a aucun accès actif. Attribuez un abonnement ou une activité pour pouvoir créer des tickets.",
+    "plans": "Abonnements",
+    "activities": "Activités individuelles",
+    "planType": {
+      "temporal": "Durée",
+      "usage": "Séances",
+      "mixed": "Mixte"
+    },
+    "assignPlan": "Attribuer",
+    "assignActivity": "Attribuer",
+    "assigning": "Attribution...",
+    "assignSuccess": "Accès attribué avec succès",
+    "assignError": "Erreur lors de l'attribution",
+    "sessions": "{{count}} séance(s)",
+    "days": "{{count}} jour(s)",
+    "noPlan": "Aucun abonnement disponible",
+    "noActivity": "Aucune activité disponible"
+  },
+  "selection": {
+    "title": "Sélectionner les activités",
+    "quotaRemaining": "{{used}}/{{total}} utilisés",
+    "quotaUnlimited": "Illimité",
+    "quotaDepleted": "Quota épuisé",
+    "giftTicket": "Ticket cadeau",
+    "generate": "Générer {{count}} ticket(s)",
+    "generating": "Génération...",
+    "noActivities": "Aucune activité disponible"
+  },
+  "result": {
+    "title": "Tickets générés",
+    "ticketNumber": "N° Ticket",
+    "activity": "Activité",
+    "validity": "Validité",
+    "print": "Imprimer",
+    "newClient": "Nouveau client",
+    "error": "Erreur lors de la génération"
+  }
+}

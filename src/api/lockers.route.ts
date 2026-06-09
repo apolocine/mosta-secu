@@ -55,6 +55,7 @@ export function createLockerAssignHandler(config: LockersHandlerConfig) {
     const { error, session } = await checkAuth('locker:assign');
     if (error) return error;
 
+    const userId = session?.user?.id || req.headers.get('x-auth-user-id') || '';
     const { lockerId, clientId, tagId } = await req.json();
 
     const lRepo = await getLockerRepo();
@@ -84,7 +85,7 @@ export function createLockerAssignHandler(config: LockersHandlerConfig) {
     const leRepo = await getLockerEventRepo();
     await leRepo.create({
       locker: lockerId, client: clientId, rfidTag: rfidTagId,
-      eventType: 'assigned', performedBy: session?.user?.id,
+      eventType: 'assigned', performedBy: userId,
     } as any);
 
     if (logAudit && getAuditUser) {
@@ -109,6 +110,7 @@ export function createLockerReleaseHandler(config: LockersHandlerConfig) {
     const { error, session } = await checkAuth('locker:release');
     if (error) return error;
 
+    const userId = session?.user?.id || req.headers.get('x-auth-user-id') || '';
     const { lockerId } = await req.json();
 
     const lRepo = await getLockerRepo();
@@ -127,7 +129,7 @@ export function createLockerReleaseHandler(config: LockersHandlerConfig) {
     const leRepo = await getLockerEventRepo();
     await leRepo.create({
       locker: lockerId, client: previousClient, rfidTag: previousTag,
-      eventType: 'released', performedBy: session?.user?.id,
+      eventType: 'released', performedBy: userId,
     } as any);
 
     if (logAudit && getAuditUser) {
@@ -151,6 +153,7 @@ export function createLockerMaintenanceHandler(config: LockersHandlerConfig) {
     const { error, session } = await checkAuth('locker:manage');
     if (error) return error;
 
+    const userId = session?.user?.id || req.headers.get('x-auth-user-id') || '';
     const { lockerId, action, notes } = await req.json();
 
     const lRepo = await getLockerRepo();
@@ -169,7 +172,7 @@ export function createLockerMaintenanceHandler(config: LockersHandlerConfig) {
         return NextResponse.json({ error: { code: 'INVALID', message: 'Casier deja en maintenance' } }, { status: 400 });
       }
       await lRepo.setMaintenance(lockerId);
-      await leRepo.create({ locker: lockerId, eventType: 'maintenance_start', performedBy: session?.user?.id, notes } as any);
+      await leRepo.create({ locker: lockerId, eventType: 'maintenance_start', performedBy: userId, notes } as any);
 
       if (logAudit && getAuditUser) {
         await logAudit({ ...getAuditUser(session), action: 'locker_maintenance_start', module: 'lockers', resource: `Casier ${locker.zone}-${locker.number}`, resourceId: locker.id, details: { notes } });
@@ -179,7 +182,7 @@ export function createLockerMaintenanceHandler(config: LockersHandlerConfig) {
         return NextResponse.json({ error: { code: 'INVALID', message: 'Casier pas en maintenance' } }, { status: 400 });
       }
       await lRepo.endMaintenance(lockerId);
-      await leRepo.create({ locker: lockerId, eventType: 'maintenance_end', performedBy: session?.user?.id, notes } as any);
+      await leRepo.create({ locker: lockerId, eventType: 'maintenance_end', performedBy: userId, notes } as any);
 
       if (logAudit && getAuditUser) {
         await logAudit({ ...getAuditUser(session), action: 'locker_maintenance_end', module: 'lockers', resource: `Casier ${locker.zone}-${locker.number}`, resourceId: locker.id, details: { notes } });
@@ -202,6 +205,7 @@ export function createLockerReportLossHandler(config: LockersHandlerConfig) {
     const { error, session } = await checkAuth('locker:manage');
     if (error) return error;
 
+    const userId = session?.user?.id || req.headers.get('x-auth-user-id') || '';
     const { lockerId, notes } = await req.json();
 
     const lRepo = await getLockerRepo();
@@ -219,7 +223,7 @@ export function createLockerReportLossHandler(config: LockersHandlerConfig) {
     const leRepo = await getLockerEventRepo();
     await leRepo.create({
       locker: lockerId, client: locker.currentClient, rfidTag: locker.currentTag,
-      eventType: 'tag_lost', performedBy: session?.user?.id, notes,
+      eventType: 'tag_lost', performedBy: userId, notes,
     } as any);
 
     const updated = await lRepo.release(lockerId);
@@ -257,4 +261,57 @@ export function createLockerEventsHandler(config: Pick<LockersHandlerConfig, 'ch
   }
 
   return { GET };
+}
+
+export function createLockerByIdHandler(config: Pick<LockersHandlerConfig, 'checkAuth' | 'getLockerRepo'>) {
+  const { checkAuth, getLockerRepo } = config;
+
+  async function DELETE(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> },
+  ) {
+    const { error } = await checkAuth('locker:manage');
+    if (error) return error;
+
+    const { id } = await params;
+    const repo = await getLockerRepo();
+    const locker = await repo.findById(id);
+    if (!locker) {
+      return NextResponse.json({ error: { code: 'NOT_FOUND', message: 'Casier non trouve' } }, { status: 404 });
+    }
+    if (locker.status === 'occupied') {
+      return NextResponse.json({ error: { code: 'INVALID', message: 'Casier occupe, liberez-le d\'abord' } }, { status: 400 });
+    }
+
+    await repo.delete(id);
+    return NextResponse.json({ data: { id } });
+  }
+
+  return { DELETE };
+}
+
+export function createLockerRfidLockHandler(config: Pick<LockersHandlerConfig, 'checkAuth' | 'getLockerRepo'>) {
+  const { checkAuth, getLockerRepo } = config;
+
+  async function PUT(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> },
+  ) {
+    const { error } = await checkAuth('locker:manage');
+    if (error) return error;
+
+    const { id } = await params;
+    const { rfidLockId } = await req.json();
+
+    const repo = await getLockerRepo();
+    const locker = await repo.findById(id);
+    if (!locker) {
+      return NextResponse.json({ error: { code: 'NOT_FOUND', message: 'Casier non trouve' } }, { status: 404 });
+    }
+
+    const updated = await repo.update(id, { rfidLockId: rfidLockId || null });
+    return NextResponse.json({ data: updated });
+  }
+
+  return { PUT };
 }

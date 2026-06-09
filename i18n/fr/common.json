@@ -1,0 +1,29 @@
+{
+  "_author": "Dr Hamid MADANI drmdh@msn.com",
+  "_note": "Subset of common translations used by secu pages",
+  "actions": {
+    "create": "Créer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "search": "Rechercher",
+    "back": "Retour",
+    "close": "Fermer",
+    "view": "Voir",
+    "assign": "Attribuer",
+    "activate": "Activer",
+    "deactivate": "Désactiver",
+    "loading": "Chargement..."
+  },
+  "status": {
+    "active": "Actif",
+    "inactive": "Inactif",
+    "suspended": "Suspendu"
+  },
+  "confirm": {
+    "delete": "Êtes-vous sûr de vouloir supprimer cet élément ?",
+    "deactivate": "Êtes-vous sûr de vouloir désactiver cet élément ?"
+  }
+}

@@ -242,3 +242,53 @@ export function createSecuSeeds(config: SecuSeedConfig): SeedDefinition[] {
     },
   ]
 }
+
+// ─── SeedFactory (runtime registry format) ───────────────────
+
+/**
+ * SeedFactory compatible with @mostajs/socle's SeedContext.
+ * Used when secu registers its seeds via register().
+ */
+export function secuSeedFactory(context: {
+  getRepository: (name: string) => Promise<unknown>
+  hashPassword: (password: string) => Promise<string>
+  log: (msg: string) => void
+}) {
+  return [
+    {
+      name: 'secu:activities',
+      description: '12 activites pre-configurees (piscine, tennis, equitation...)',
+      run: async () => {
+        const activityRepo = await context.getRepository('activityRepo') as any
+        await seedActivities(activityRepo)
+      },
+    },
+    {
+      name: 'secu:demoUsers',
+      description: '3 utilisateurs (agent accueil, agent attraction, superviseur)',
+      run: async () => {
+        const userRepo = await context.getRepository('userRepo') as any
+        const roleRepo = await context.getRepository('roleRepo') as any
+        await seedDemoUsers(userRepo, roleRepo, context.hashPassword)
+      },
+    },
+    {
+      name: 'secu:demoData',
+      description: '10 clients, 3 abonnements, 80 casiers, 10 cartes RFID',
+      run: async () => {
+        const activityRepo = await context.getRepository('activityRepo') as any
+        const count = await activityRepo.count()
+        if (count === 0) await seedActivities(activityRepo)
+        await seedDemoData(
+          await context.getRepository('userRepo') as any,
+          await context.getRepository('clientRepo') as any,
+          activityRepo,
+          await context.getRepository('subscriptionPlanRepo') as any,
+          await context.getRepository('clientAccessRepo') as any,
+          await context.getRepository('lockerRepo') as any,
+          await context.getRepository('rfidTagRepo') as any,
+        )
+      },
+    },
+  ]
+}

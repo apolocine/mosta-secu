@@ -1,0 +1,12 @@
+{
+  "name": "secu",
+  "package": "@mostajs/secu",
+  "version": "2.0.0",
+  "type": "business",
+  "priority": 100,
+  "dependencies": ["auth", "audit"],
+  "displayName": "SecuAccess",
+  "description": "Client access control — clients, lockers, RFID tags",
+  "icon": "Shield",
+  "register": "./dist/register.js"
+}
